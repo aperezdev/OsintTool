@@ -26,14 +26,7 @@ then
 else
 	$pip install python-daemon
 	$pip install daemon-runner
-	$pip install os
-	$pip install io
-	$pip install time
-	$pip install tempfile
-	$pip install sys
 	$pip install twitter
-	$pip install json
-	$pip install re
 	$pip install emoji
 	$pip install graypy
 	$pip install matplotlib
@@ -41,11 +34,8 @@ else
 	$pip install datetime
 	$pip install wordcloud
 	$pip install stop_words
-	$pip install dateutil
-	$pip install PIL
 	$pip install twarc
 	$pip install pandas
-	$pip install itertools
 	$pip install seaborn
 	$pip install logging
 	$pip install multiprocessing
@@ -53,7 +43,6 @@ else
 	$pip install request
 	$pip install beautifulsoup4
 	$pip install shodan
-	$pip install python3.6-devel
 	$pip install googletrans
 fi
 
