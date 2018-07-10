@@ -86,9 +86,9 @@ class AnalyzerProcess():
 		self.alertLogger = alerLoggerObject
 		self.rules = rules
 		self.config = config
-		self.api_id = 161204
-		self.api_hash = '35e6590742ca2148d03a4325028ab5f7'
-		self.phone_number = '+34687784084'
+		self.api_id = "insert Telegram API ID"
+		self.api_hash = "insert Telegram API HASH"
+		self.phone_number = "insert phone number"
 		self.num=30
 		self.client= 'telegramClient'	
 		self.currdir = "/home/centos/modosint-python3" + path.dirname(__file__)
