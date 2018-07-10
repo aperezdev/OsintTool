@@ -3,6 +3,10 @@ import logging
 import os
 import time
 import sys
+import shodan
+import json
+
+
 
 class Analyzer():
 	def __init__(self, config, executionMode, rules):
@@ -48,6 +52,7 @@ class Analyzer():
 		logger.addHandler(handler)
 		return logger
 
+
 	def run(self):
 		analyzerProcess = AnalyzerProcess(self.config, self.logger, self.alertLogger, self.rules)
 		# daemon execution (dont terminate process)
@@ -63,13 +68,78 @@ class Analyzer():
 
 
 class AnalyzerProcess():
+
 	def __init__(self, config, loggerObject, alerLoggerObject, rules):
 		self.logger = loggerObject
 		self.alertLogger = alerLoggerObject
 		self.rules = rules
 		self.config = config
+		self.SHODAN_API_KEY = "fW7Cyg1vrYdC2CvWrsGi0wTZBH3amctC"
+		self.api = shodan.Shodan(self.SHODAN_API_KEY)
+		self.idRule=0
+		self.string=""
+		self.hostname=""
+		self.net=""
+		self.os=""
+		self.country=""
+		self.query=""
+				
+	def searchShodan(self,rule,IdRule):
+		self.query=""
+		self.hostname=""
+		self.net=""
+		self.string=""
+		# Wrap the request in a try/ except block to catch errors
+		try:
+			try:
+				self.string=(' '.join(rule['_string']))
+			except KeyError:
+				pass
+			try:
+				self.hostname=(' '.join(rule['_hostname']))
+			except KeyError:
+				pass
+			try:
+				self.net=(' '.join(rule['_net']))
+			except KeyError:
+				pass
+			# Search Shodan
+			if self.hostname is not "":
+				self.query=self.query + ' hostname:'+self.hostname
+			if self.net is not "":
+				self.query= self.query + ' net:'+self.net
+			if self.string is not "":
+				self.query= self.query + ' '+ self.string
+			results = self.api.search(self.query)
+			for result in results['matches']:
+				shodandata = {
+					"TotalResults": results['total'],
+					"IP": result['ip_str'],
+					"short_message": result['data'],
+					"hostname": result['hostnames'],
+					"SO": result['os'],
+					"port": result['port'],
+					"DateTime": result['timestamp'],
+					"Rule": IdRule,
+					"full_message": "Shodan Query: " + self.query
+				}
+				fichero = open("/var/log/modosint/analyzer-shodan/graylog.txt", "+a")
+				autoshodan= json.dumps(shodandata)
+				fichero.write(autoshodan + '\n')
+				os.chmod("/var/log/modosint/analyzer-shodan/graylog.txt",0o777)
+		except shodan.APIError as e:
+			self.alertLogger.info('Error: {}'.format(e))
 
+	
 	# custom functionality
 	def run(self):
 		self.logger.info("working...")
-		self.alertLogger.info("{'alert':'True', 'rule':'match'}")
+		OSINTRules= self.rules
+		lista= list(OSINTRules)
+		x=0
+		for i in range(len(lista)):
+			self.idRule = lista[x]['metadata']['id']
+			lista[x].pop('metadata')
+			self.searchShodan(lista[x],self.idRule)
+			x=x+1
+		self.alertLogger.info("Shodan Analyzer Job Finished succesfully.")
