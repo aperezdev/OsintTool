@@ -1,1 +1,5 @@
-
+rule id:1; msg:prueba; daterevision:20/05/1992; expr:(_username:Cyber_Security_Channel; _string:malware;);
+rule id:2; msg:prueba; daterevision:20/05/1992; expr:(_username:A3Noticias; _string:religion; _language:en;);
+#rule id:3; msg:prueba; daterevision:20/05/1992; expr:(_string:prueba;);
+rule id:4; msg:prueba; daterevision:20/05-1992; expr:(_string:un virus detectado;);
+rule id:5; msg:prueba; daterevision:; expr:(_string:cipher;_string:botnet;);
