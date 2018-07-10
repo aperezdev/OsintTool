@@ -74,7 +74,7 @@ class AnalyzerProcess():
 		self.alertLogger = alerLoggerObject
 		self.rules = rules
 		self.config = config
-		self.SHODAN_API_KEY = "fW7Cyg1vrYdC2CvWrsGi0wTZBH3amctC"
+		self.SHODAN_API_KEY = "insert here Shodan API KEY"
 		self.api = shodan.Shodan(self.SHODAN_API_KEY)
 		self.idRule=0
 		self.string=""
