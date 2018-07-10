@@ -96,10 +96,10 @@ class AnalyzerProcess():
 		self.rules = rules
 		self.config = config
 		self.executionMode = executionMode
-		self.access_token = "489722270-crzIwg2YOFx3gjgbL6rTzfe1hhlLWZsjCCoNf6MD"
-		self.access_token_secret = "JyKjmexBH1XbTs64Xhq8nvPCCeU2lbGgV1uPPx5Hfxyra"
-		self.consumer_key = "128GAmwtCJXKUEKUfZ9t7QHI2"
-		self.consumer_secret = "dqYkHUPGZtHOqj5q4l0GkXhOHehG4C1tErNLFWc5DDouheLsuS"
+		self.access_token = "insert Twitter API access token"
+		self.access_token_secret = "insert Twitter API token secret"
+		self.consumer_key = "insert Twitter API consumer key"
+		self.consumer_secret = "insert Twitter API consumer secret"
 		self.twarc = Twarc(self.consumer_key, self.consumer_secret, self.access_token, self.access_token_secret)
 		self.currdir = "/home/centos/modosint-python3" + path.dirname(__file__)
 		self.wcloud = ""
