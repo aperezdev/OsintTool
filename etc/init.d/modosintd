@@ -1,1 +1,66 @@
+#!/bin/bash
 
+### BEGIN INIT INFO
+#
+#  Modulable OSINT Tool (ModOSINT)
+#
+### END INIT INFO
+
+BIN="/usr/local/bin/modosint.py"
+CONF="/etc/modosint/modosint.conf"
+
+# functions
+function start(){
+   python $BIN -c $CONF -D start
+}
+
+function stop(){
+   pidfile=$(cat $CONF | awk -F'pidfile:' '{print $2}' | tr -d ' ' | tr -d '\n');
+   if [ -f $pidfile ];
+   then
+      pid=$(cat $pidfile);
+      kill -USR1 $pid;
+   else
+      echo "ERROR pidfile dont exist! Nothing to do..."
+   fi
+}
+
+function reload(){
+   pidfile=$(cat $CONF | awk -F'pidfile:' '{print $2}' | tr -d ' ' | tr -d '\n');
+   if [ -f $pidfile ];
+   then
+      pid=$(cat $pidfile);
+      kill -HUP $pid;
+   else
+      echo "ERROR pidfile dont exist! Nothing to do..."
+   fi
+}
+
+# switch case
+case "$1" in
+   start)
+      echo "Starting ModOSINT-Tool...";
+      start;
+      ;;
+
+   stop)
+      echo "Stopping ModOSINT-Tool...";
+      stop;
+      ;;
+
+   restart)
+      echo "Restarting ModOSINT-Tool...";
+      stop;
+      start;
+      ;;
+
+   reload)
+      echo "Reloading OSINT Rules...";
+      reload;
+      ;;
+   *)
+      echo "Usage: /etc/init.d/modosintd.sh {start|stop|restart|reload}";
+      exit 1
+      ;;
+esac
+exit 0;
